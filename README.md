@@ -1,10 +1,3 @@
-iso 9960
-https://wiki.osdev.org/ISO_9660
-
-el torito
-https://wiki.osdev.org/El-Torito
-https://dev.lovelyhq.com/libburnia/libisofs/raw/branch/master/doc/boot_sectors.txt
-
 <p align="center">
 <a href="https://dahliaos.io">Website</a> •
 <a href="https://dahliaos.io/discord">Discord</a> •
@@ -14,6 +7,12 @@ https://dev.lovelyhq.com/libburnia/libisofs/raw/branch/master/doc/boot_sectors.t
 
 # iso9960 library
 This library is a simple implementation of the iso9960 filesystem standard.
+
+## helpfull links
+
+- [iso 9960 on osdev](https://wiki.osdev.org/ISO_9660)
+- [el torito on osdev](https://wiki.osdev.org/El-Torito)
+- [el torito on lovelyhq](https://dev.lovelyhq.com/libburnia/libisofs/raw/branch/master/doc/boot_sectors.txt)
 
 ## License
 
