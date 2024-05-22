@@ -11,7 +11,7 @@ class SystemUseEntry {
   }
 
   bool hasRockRidge() {
-    return type == 'RR';
+    return type == 'RR' || type == 'PX';
   }
 
   @override

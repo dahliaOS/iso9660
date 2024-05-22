@@ -321,7 +321,11 @@ class Entry {
         offset += length;
       }
 
-      _entries.removeRange(0, 2);
+      if (_entries.length > 2) {
+        _entries.removeRange(0, 2);
+      } else {
+        throw Exception('Invalid Entry');
+      }
 
       for (Uint8List entry in _entries) {
         Entry child = Entry(entry, isoData);
