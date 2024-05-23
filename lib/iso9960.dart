@@ -1,23 +1,8 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:iso9960/io.dart';
 import 'package:iso9960/constants.dart';
 import 'package:iso9960/el_torito.dart';
 import 'package:iso9960/susp.dart';
 import 'package:iso9960/rockridge.dart';
-
-void main() {
-  String fileName = 'linuxmint-21.3-cinnamon-64bit.iso';
-  Uint8List data = openIso(fileName);
-
-  var iso9960 = Iso9960(data);
-  var files = iso9960.files;
-  //var f = files.children[0].children[2];
-
-  //writeToDisk(f.data, f.name, f.recordingDateAndTime);
-
-  printFiles(files, fileName);
-}
 
 void printFiles(Entry entry, fileName) {
   print("Contents of $fileName:");
@@ -291,7 +276,15 @@ class Entry {
         while (offset < _data.length) {
           int length = _data[offset];
           if (length == 0) {
-            break;
+            do {
+              offset++;
+            } while (offset < _data.length && _data[offset] == 0);
+
+            if (offset >= _data.length) {
+              break;
+            }
+
+            length = _data[offset];
           }
 
           var entry = _data.sublist(offset, offset + length);

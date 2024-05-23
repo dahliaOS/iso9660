@@ -1,7 +1,7 @@
 name: iso9960
-description: A sample command-line application.
+description: This library is a simple implementation of the iso9960 filesystem standard.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/dahliaOS/iso9960
 
 environment:
   sdk: ^3.4.0
