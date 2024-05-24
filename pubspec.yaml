@@ -1,7 +1,7 @@
-name: iso9960
-description: This library is a simple implementation of the iso9960 filesystem standard.
+name: iso9660
+description: This library is a simple implementation of the iso9660 filesystem standard.
 version: 1.0.0
-repository: https://github.com/dahliaOS/iso9960
+repository: https://github.com/dahliaOS/iso9660
 
 environment:
   sdk: ^3.4.0

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
-import 'package:iso9960/constants.dart';
-import 'package:iso9960/el_torito.dart';
-import 'package:iso9960/susp.dart';
-import 'package:iso9960/rockridge.dart';
+import 'package:iso9660/constants.dart';
+import 'package:iso9660/el_torito.dart';
+import 'package:iso9660/susp.dart';
+import 'package:iso9660/rockridge.dart';
 
 void printFiles(Entry entry, fileName) {
   print("Contents of $fileName:");
