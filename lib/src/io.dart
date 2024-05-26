@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:iso9660/iso9660.dart';
+import 'package:iso9660/src/iso9660.dart';
 
 Uint8List openIso(String path) {
   File file = File(path);

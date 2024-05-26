@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'constants.dart';
+import 'package:iso9660/src/constants.dart';
 
 // https://dev.lovelyhq.com/libburnia/libisofs/raw/branch/master/doc/boot_sectors.txt
 

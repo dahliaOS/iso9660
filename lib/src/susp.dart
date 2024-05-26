@@ -26,14 +26,13 @@ class SystemUseEntry {
 
 class ExtensionRecord {
   SystemUseEntry systemUseEntry;
-  Uint8List _data = Uint8List(0);
   int version = 0;
   String identifier = '';
   String descriptor = '';
   String source = '';
 
   ExtensionRecord(this.systemUseEntry) {
-    _data = systemUseEntry.data;
+    Uint8List data = systemUseEntry.data;
 
     if (systemUseEntry.type != 'ER') {
       throw Exception('Invalid extension record type');
@@ -43,20 +42,20 @@ class ExtensionRecord {
       throw Exception('Invalid extension record length');
     }
 
-    int identifierLength = _data[4];
-    int descriptorLength = _data[5];
-    int sourceLength = _data[6];
+    int identifierLength = data[4];
+    int descriptorLength = data[5];
+    int sourceLength = data[6];
 
     if (systemUseEntry.length <
         8 + identifierLength + descriptorLength + sourceLength) {
       throw Exception('Invalid extension record length');
     }
 
-    version = _data[7];
-    identifier = String.fromCharCodes(_data.sublist(8, 8 + identifierLength));
-    descriptor = String.fromCharCodes(_data.sublist(
+    version = data[7];
+    identifier = String.fromCharCodes(data.sublist(8, 8 + identifierLength));
+    descriptor = String.fromCharCodes(data.sublist(
         8 + identifierLength, 8 + identifierLength + descriptorLength));
-    source = String.fromCharCodes(_data.sublist(
+    source = String.fromCharCodes(data.sublist(
         8 + identifierLength + descriptorLength,
         8 + identifierLength + descriptorLength + sourceLength));
   }

@@ -1,26 +1,23 @@
 import 'dart:typed_data';
-import 'susp.dart';
+import 'package:iso9660/src/susp.dart';
 
 class RockridgeNameEntry {
   SystemUseEntry systemUseEntry;
-  Uint8List _data = Uint8List(0);
   int mode = 0;
   Uint8List flags = Uint8List(0);
   String name = '';
 
   RockridgeNameEntry(this.systemUseEntry) {
-    _data = systemUseEntry.data;
-
     if (!systemUseEntry.hasRockRidge()) {
       throw Exception('Invalid Rock Ridge entry');
     }
 
-    _getMode();
-    _getNameEntry();
+    _getMode(systemUseEntry.data);
+    _getNameEntry(systemUseEntry.data);
   }
 
-  void _getMode() {
-    int rrMode = _data.buffer.asByteData().getUint32(0, Endian.little);
+  void _getMode(Uint8List data) {
+    int rrMode = data.buffer.asByteData().getUint32(0, Endian.little);
 
     bool S_IFLNK = (rrMode & 0170000) == 0120000;
     bool S_IFDIR = (rrMode & 0170000) == 0040000;
@@ -36,9 +33,9 @@ class RockridgeNameEntry {
     }
   }
 
-  void _getNameEntry() {
-    flags = _data.sublist(0);
-    name = String.fromCharCodes(_data.sublist(1));
+  void _getNameEntry(Uint8List data) {
+    flags = data.sublist(0);
+    name = String.fromCharCodes(data.sublist(1));
     name = name.split('NM')[1].split('PX')[0];
     // regex all whitespace until the first character
     name = name.replaceAll(RegExp(r'^\s+'), '');
