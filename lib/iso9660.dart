@@ -4,19 +4,6 @@ import 'package:iso9660/el_torito.dart';
 import 'package:iso9660/susp.dart';
 import 'package:iso9660/rockridge.dart';
 
-void printFiles(Entry entry, fileName) {
-  print("Contents of $fileName:");
-  printFile(entry);
-}
-
-void printFile(Entry entry, {int depth = 0}) {
-  print('${' ' * depth}${entry.name} - ${entry.recordingDateAndTime}');
-
-  for (Entry child in entry.children) {
-    printFile(child, depth: depth + 2);
-  }
-}
-
 DateTime primaryVolumeDescriptorDateTime(Uint8List data) {
   int year = data[0] + 1970;
   int month = data[1];
@@ -37,16 +24,15 @@ DateTime directoryDateTime(Uint8List data) {
   return DateTime(year, month, day, hour, minute, second);
 }
 
-class Iso9960 {
+class Iso9660 {
   Uint8List _data;
   late PrimaryVolumeDescriptor primaryVolumeDescriptor;
   late PathTable lPathTable;
   late PathTable mPathTable;
   late BootRecord bootRecord;
   late BootCatalog bootCatalog;
-  late Entry files;
 
-  Iso9960(this._data) {
+  Iso9660(this._data) {
     primaryVolumeDescriptor = PrimaryVolumeDescriptor(
         _data.sublist(pvdOffset, pvdOffset + blockSize));
     lPathTable = PathTable(
@@ -68,15 +54,27 @@ class Iso9960 {
 
     bootCatalog = BootCatalog(_data.sublist(bootRecord.cataloglba * blockSize,
         bootRecord.cataloglba * blockSize + blockSize));
+  }
 
-    files = Entry(
-        _data.sublist(
-            primaryVolumeDescriptor.rootDirectoryEntry.locationOfExtent *
-                blockSize,
-            primaryVolumeDescriptor.rootDirectoryEntry.locationOfExtent *
-                    blockSize +
-                primaryVolumeDescriptor.rootDirectoryEntry.dataLength),
-        _data);
+  Entry get files => Entry(
+      _data.sublist(
+          primaryVolumeDescriptor.rootDirectoryEntry.locationOfExtent *
+              blockSize,
+          primaryVolumeDescriptor.rootDirectoryEntry.locationOfExtent *
+                  blockSize +
+              primaryVolumeDescriptor.rootDirectoryEntry.dataLength),
+      _data);
+
+  void printFiles() {
+    _printFile(files);
+  }
+
+  void _printFile(Entry entry, {int depth = 0}) {
+    print('${' ' * depth}${entry.name} - ${entry.recordingDateAndTime}');
+
+    for (Entry child in entry.children) {
+      _printFile(child, depth: depth + 2);
+    }
   }
 }
 

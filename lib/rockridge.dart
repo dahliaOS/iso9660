@@ -42,9 +42,13 @@ class RockridgeNameEntry {
     name = name.split('NM')[1].split('PX')[0];
     // regex all whitespace until the first character
     name = name.replaceAll(RegExp(r'^\s+'), '');
-    var bytes = Uint8List.fromList(name.codeUnits);
+    Uint8List bytes = Uint8List.fromList(name.codeUnits);
     // remove the first 2 bytes
     bytes = bytes.sublist(2);
-    name = String.fromCharCodes(bytes);
+    // remove non printable characters
+    List<int> printableBytes =
+        bytes.where((byte) => byte >= 32 && byte <= 126).toList();
+
+    name = String.fromCharCodes(printableBytes);
   }
 }

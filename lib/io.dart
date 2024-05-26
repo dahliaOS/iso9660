@@ -9,25 +9,37 @@ Uint8List openIso(String path) {
 
 void writeToDisk(Uint8List data, String path, DateTime date) {
   File file = File(path);
+  file.createSync(recursive: true);
   file.writeAsStringSync(String.fromCharCodes(data));
   file.setLastModifiedSync(date);
+  file.setLastAccessedSync(date);
 }
 
-void createDirectory(String path) {
-  Directory directory = Directory(path);
-  directory.createSync();
+void saveFiles(Entry entry, String path, {bool verbose = false}) {
+  if (!path.endsWith('/')) {
+    path += '/';
+  }
+  Stopwatch stopwatch = Stopwatch()..start();
+
+  for (Entry child in entry.children) {
+    saveFile(child, path, verbose);
+  }
+
+  if (verbose) {
+    print('saving files took ${stopwatch.elapsed}');
+  }
 }
 
-void saveFile(Entry entry, String path) {
-  if (entry.flags == 2) {
-    for (var child in entry.children) {
-      createDirectory('$path${entry.name}/');
-      saveFile(child, '$path${entry.name}/');
+void saveFile(Entry entry, String path, bool verbose) {
+  if (entry.isDirectory) {
+    for (Entry child in entry.children) {
+      saveFile(child, '$path${entry.name}/', verbose);
     }
   } else {
     Uint8List fileData = entry.data;
     String fileName = '$path${entry.name}';
-    DateTime date = entry.recordingDateAndTime;
-    writeToDisk(fileData, fileName, date);
+    DateTime fileDate = entry.recordingDateAndTime;
+    writeToDisk(fileData, fileName, fileDate);
+    print('saved $path${entry.name}');
   }
 }
